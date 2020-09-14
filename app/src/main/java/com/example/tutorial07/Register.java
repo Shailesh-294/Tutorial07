@@ -11,8 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Register extends AppCompatActivity {
-
-    EditText username,passw,fname,lname;
+    EditText pass,username;
     Button register;
     TextView login;
     Database Db;
@@ -25,29 +24,25 @@ public class Register extends AppCompatActivity {
 
         Db = new Database(this);
         username = findViewById(R.id.username);
-        passw = findViewById(R.id.pass);
-        fname = findViewById(R.id.fname);
-        lname = findViewById(R.id.lname);
+        pass = findViewById(R.id.pass);
         register = findViewById(R.id.submit);
         login = findViewById(R.id.returnlogin);
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String Username,Password,Fname,Lname;
+                String Password,Username;
+                Password = pass.getText().toString();
                 Username = username.getText().toString();
-                Password = passw.getText().toString();
-                Fname = fname.getText().toString();
-                Lname = lname.getText().toString();
 
-                if(Username.equals("") || Password.equals("") || Fname.equals("") || Lname.equals("")){
+                if(Username.equals(" ") || Password.equals(" ")){
                     Toast.makeText(Register.this, "Please Enter All Details", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     boolean result = Db.verifyUser(Username);
-                    if(result == false){
-                        boolean ins = Db.insertData(Fname,Lname,Username,Password);
-                        if(ins == true){
+                    if(!result){
+                        boolean ins = Db.insertData(Username,Password);
+                        if(ins){
                             Toast.makeText(Register.this, "Register Successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Register.this,Login.class);
                             startActivity(intent);
@@ -57,10 +52,16 @@ public class Register extends AppCompatActivity {
                             Toast.makeText(Register.this, "Not Register", Toast.LENGTH_SHORT).show();
                         }
                     }
+                    else{
+                        username.setText("");
+                        pass.setText("");
+                        username.requestFocus();
+                        Toast.makeText(Register.this, "Already Register", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
-               /* boolean result = Db.insertData(Fname,Lname,Username,Password);
-                if(result == true){
+               /* boolean result = Dbm.insertData(userid,password);
+                if(result){
                     Toast.makeText(Register.this, "Register Successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Register.this,Login.class);
                     startActivity(intent);

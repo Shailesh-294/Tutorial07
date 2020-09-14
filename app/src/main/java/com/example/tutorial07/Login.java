@@ -36,16 +36,17 @@ public class Login extends AppCompatActivity {
                 password = pass.getText().toString();
 
                 boolean res = Db.verifylogin(Username,password);
-                if(res == true){
+                if(res){
                     Intent intent = new Intent(Login.this,Welcome.class);
+                    intent.putExtra("username",Username);
                     startActivity(intent);
                     Toast.makeText(Login.this, "Login successfully", Toast.LENGTH_SHORT).show();
                     finish();
                 }else{
                     Toast.makeText(Login.this, "Invalid Username and Password", Toast.LENGTH_SHORT).show();
                 }
-                /* Cursor result = Db.getData();
-                if(result.getString(4).equals(Username) && result.getString(5).equals(password)){
+               /*  Cursor result = Db.getData();
+                if(result.getString(2).equals(Username) && result.getString(3).equals(password)){
                     Toast.makeText(Login.this, "Login successfully", Toast.LENGTH_SHORT).show();
                 }
                 else{
