@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.regex.Pattern;
 
 public class Register extends AppCompatActivity {
     EditText pass,username;
@@ -35,8 +38,8 @@ public class Register extends AppCompatActivity {
                 Password = pass.getText().toString();
                 Username = username.getText().toString();
 
-                if(Username.equals(" ") || Password.equals(" ")){
-                    Toast.makeText(Register.this, "Please Enter All Details", Toast.LENGTH_SHORT).show();
+                if( !Patterns.EMAIL_ADDRESS.matcher(Username).matches() || Username.equals(" ") || Password.equals(" ") ){
+                    Toast.makeText(Register.this, "Please Enter Valid Details", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     boolean result = Db.verifyUser(Username);

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 public class Welcome extends AppCompatActivity {
 
     TextView welcome;
+    SharedPreferences share;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,8 +22,9 @@ public class Welcome extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Welcome");
 
-        String user = getIntent().getStringExtra("username");
-
+        share = getSharedPreferences("Ldata",MODE_PRIVATE);
+        editor = share.edit();
+        String user = share.getString("username","");
         welcome = findViewById(R.id.welcome);
         welcome.setText("Welcome "+user);
     }
@@ -35,6 +39,8 @@ public class Welcome extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.logout){
+            editor.putBoolean("login",false);
+            editor.commit();
             Intent intent = new Intent(Welcome.this,Login.class);
             startActivity(intent);
             finish();
