@@ -11,10 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.regex.Pattern;
-
 public class Register extends AppCompatActivity {
-    EditText pass,username;
+    EditText pass,username,fname,lname;
     Button register;
     TextView login;
     Database Db;
@@ -26,6 +24,8 @@ public class Register extends AppCompatActivity {
         getSupportActionBar().hide();
 
         Db = new Database(this);
+        fname = findViewById(R.id.fname);
+        lname = findViewById(R.id.lname);
         username = findViewById(R.id.username);
         pass = findViewById(R.id.pass);
         register = findViewById(R.id.submit);
@@ -34,9 +34,11 @@ public class Register extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String Password,Username;
+                String Password,Username,Fname,Lname;
                 Password = pass.getText().toString();
                 Username = username.getText().toString();
+                Fname = fname.getText().toString();
+                Lname = lname.getText().toString();
 
                 if( !Patterns.EMAIL_ADDRESS.matcher(Username).matches() || Username.equals(" ") || Password.equals(" ") ){
                     Toast.makeText(Register.this, "Please Enter Valid Details", Toast.LENGTH_SHORT).show();
@@ -44,7 +46,7 @@ public class Register extends AppCompatActivity {
                 else{
                     boolean result = Db.verifyUser(Username);
                     if(!result){
-                        boolean ins = Db.insertData(Username,Password);
+                        boolean ins = Db.insertData(Username,Password,Fname,Lname);
                         if(ins){
                             Toast.makeText(Register.this, "Register Successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Register.this,Login.class);
@@ -58,7 +60,9 @@ public class Register extends AppCompatActivity {
                     else{
                         username.setText("");
                         pass.setText("");
-                        username.requestFocus();
+                        fname.setText("");
+                        lname.setText("");
+                        fname.requestFocus();
                         Toast.makeText(Register.this, "Already Register", Toast.LENGTH_SHORT).show();
                     }
                 }
